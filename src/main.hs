@@ -3,33 +3,47 @@ module Main (
     ) where
 
 import Board
+import InitialBoard
 import System.Console.ANSI
 import System.IO
 import Data.List.Split
-import System.Random
 import System.Environment
 import Control.Concurrent
-import Control.Monad
 
 main :: IO ()
 main = do
-  dimensions <- getArgs
-  let width = read (head dimensions) :: Int
-  let height = read (dimensions !! 1) :: Int
-  board <- setupBoard width height
+  args <- getArgs
+  let width = widthArg args
+  let height = heightArg args
+  let initialConfig = boardConfigArg args
+  board <- setupBoard width height initialConfig
   printBlock board
 
-setupBoard :: Int -> Int -> IO Board
-setupBoard width height = do
-  cells <- replicateM (width*height) (randomRIO (0 :: Int,1 :: Int))
-  let board = toBoard width (map (\j -> if j == 1 then Alive else Dead) cells)
-  return board
+defaultDim :: Int
+defaultDim = 10
+
+widthArg :: [String] -> Int
+widthArg (width:args) = read width :: Int
+widthArg _ = defaultDim
+
+heightArg :: [String] -> Int
+heightArg (width:height:args) = read height :: Int
+heightArg args = widthArg args
+
+boardConfigArg :: [String] -> String
+boardConfigArg (width:height:b:args) = b
+boardConfigArg _ = ""
+
+setupBoard :: Int -> Int -> String -> IO Board
+setupBoard width height boardConf
+  | boardConf == "liveLine" = return (liveLine width height)
+  | otherwise = randomBoard width height
 
 pause :: IO ()
 pause = do
     hFlush stdout
     -- 1 second pause
-    threadDelay 1000000
+    threadDelay 100000
 
 printBlock :: Board -> IO ()
 printBlock board = do
