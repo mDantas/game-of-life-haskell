@@ -51,14 +51,14 @@ executable y
   main-is:             main.hs
   
   -- Modules included in this executable, other than Main.
-  -- other-modules:       
+  other-modules:       Board
   
   -- LANGUAGE extensions used by modules in this package.
   -- other-extensions:    
   
   -- Other library packages from which modules are imported.
-  build-depends:       base >=4.10 && <4.11
-  
+  build-depends:       random, split, ansi-terminal, base
+
   -- Directories containing source files.
   hs-source-dirs:      src
   
