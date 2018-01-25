@@ -57,7 +57,7 @@ executable y
   -- other-extensions:    
   
   -- Other library packages from which modules are imported.
-  build-depends:       random, split, ansi-terminal, base
+  build-depends:       random, split, ansi-terminal, base, vector, vector-split
 
   -- Directories containing source files.
   hs-source-dirs:      src

@@ -22,14 +22,14 @@ main = do
 setupBoard :: Int -> Int -> IO Board
 setupBoard width height = do
   cells <- replicateM (width*height) (randomRIO (0 :: Int,1 :: Int))
-  let board = chunksOf width (map (\j -> if j == 1 then Alive else Dead)  cells)
+  let board = toBoard width (map (\j -> if j == 1 then Alive else Dead) cells)
   return board
 
 pause :: IO ()
 pause = do
     hFlush stdout
     -- 1 second pause
-    threadDelay 100000
+    threadDelay 1000000
 
 printBlock :: Board -> IO ()
 printBlock board = do
