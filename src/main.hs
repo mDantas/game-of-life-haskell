@@ -5,29 +5,25 @@ module Main (
 import Board
 import System.Console.ANSI
 import System.IO
-import Data.List
 import Data.List.Split
 import System.Random
 import System.Environment
-
 import Control.Concurrent
-
-
-colorComic :: [Board -> IO ()]
-colorComic = [printBlock]
-
+import Control.Monad
 
 main :: IO ()
 main = do
   dimensions <- getArgs
-  let width = read (dimensions !! 0) :: Int
+  let width = read (head dimensions) :: Int
   let height = read (dimensions !! 1) :: Int
-  c <- (mapM (\_ -> randomRIO ((0 :: Int),(1 :: Int))) [0..(width*height)-1])
-  let b = chunksOf width (map (\j -> if j == 1 then Alive else Dead)  c)
-  (mapM_ (\color_comic -> resetScreen >> color_comic) (colorComic <*> [b]))
+  board <- setupBoard width height
+  printBlock board
 
-resetScreen :: IO ()
-resetScreen = clearScreen >> setCursorPosition 0 0
+setupBoard :: Int -> Int -> IO Board
+setupBoard width height = do
+  cells <- replicateM (width*height) (randomRIO (0 :: Int,1 :: Int))
+  let board = chunksOf width (map (\j -> if j == 1 then Alive else Dead)  cells)
+  return board
 
 pause :: IO ()
 pause = do
@@ -37,7 +33,7 @@ pause = do
 
 printBlock :: Board -> IO ()
 printBlock board = do
-    clearScreen >> setCursorPosition 0 0
-    putStrLn (showBoard board)
-    pause
-    printBlock (nextGen board)
+  clearScreen >> setCursorPosition 0 0
+  putStrLn (showBoard board)
+  pause
+  printBlock (nextGen board)

@@ -14,7 +14,7 @@ type Board = [[Cell]]
 
 -- From a list of cells, get the number that are alive.
 census :: Cells -> Int
-census = (length . filter (== Alive))
+census = length . filter (== Alive)
 
 -- The basic rules for Conway's Game of Life
 fate :: Cell -> Int -> Cell
@@ -34,16 +34,16 @@ neighbors :: Board -> (Int,Int) -> Cells
 neighbors b = map (cellAt b) . legal . positions
   where
     legal = filter (\(i,j) -> inHeight i && inWidth j)
-    inWidth k = k >= 0 && k <= (length (b !! 0)) - 1
-    inHeight k = k >= 0 && k <= (length b) - 1
+    inWidth k = k >= 0 && k <= length (head b) - 1
+    inHeight k = k >= 0 && k <= length b - 1
     moves = [(+0),(+(-1)),(+1)]
     positions (i,j) = tail ((,) <$> (moves <*> [i]) <*> (moves <*> [j])) -- tail to exclude the cell itself which will be at the head
 
 -- Get the next generation of the board
 -- (I.e. apply 'fate' to every element on the board)
 nextGen :: Board -> Board
-nextGen b = chunksOf (length (b !! 0)) [fate (cellAt b position) (census (neighbors b position)) |
-  position <- (,) <$> [0..(length b)-1] <*> [0..(length (b !! 0))-1]]
+nextGen b = chunksOf (length (head b)) [fate (cellAt b position) (census (neighbors b position)) |
+  position <- (,) <$> [0..length b -1] <*> [0..length (head b) -1]]
 
 -- Pretty print the board.
 showBoard :: Board -> String
