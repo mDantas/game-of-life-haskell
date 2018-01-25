@@ -27,19 +27,17 @@ main = do
   (mapM_ (\color_comic -> resetScreen >> color_comic) (colorComic <*> [b]))
 
 resetScreen :: IO ()
-resetScreen = clearScreen >> setSGR [Reset] >> setCursorPosition 0 0
+resetScreen = clearScreen >> setCursorPosition 0 0
 
 pause :: IO ()
 pause = do
     hFlush stdout
     -- 1 second pause
-    threadDelay 50000
+    threadDelay 100000
 
 printBlock :: Board -> IO ()
 printBlock board = do
     clearScreen >> setCursorPosition 0 0
---    setSGR [SetColor Foreground Vivid Red]
     putStrLn (showBoard board)
-    pause
     pause
     printBlock (nextGen board)
