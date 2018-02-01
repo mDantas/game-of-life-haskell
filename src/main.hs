@@ -35,7 +35,7 @@ boardConfigArg (width:height:b:args) = b
 boardConfigArg _ = ""
 
 setupBoard :: Int -> Int -> String -> IO Board
-setupBoard width height "liveLine" = return (liveLine width height)
+setupBoard width height "line" = return (liveLine width height)
 setupBoard width height "cross" = return (cross width height)
 setupBoard width height _  = randomBoard width height
 
