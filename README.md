@@ -5,13 +5,14 @@ Conway's game of life written in Haskell.
 * Install haskell: `brew cask install haskell-platform`
 
 ## Seeing Life
-* Compile the executable (from the project directory): `cabal build`
-* Run the executable from the provided symlink: `./game`
+* Compile the executable (from the project directory) `cabal build`
+* Run the executable from the provided symlink
+`./game`
 
 ## Options
 ### Board size
-* (default is a measly 10 by 10)
-* `./game 400 100` will run life on a board width 400 and height 
+* Default is a measly 10 by 10.
+* `./game 400 100` will run life on a board of width 400 and height 100 
 ### Board initialization
 * A third command line argument with legal values `live` or `cross` will initialize a board with that shape of live cells.
 * Why `line` and `cross`? They produce neat patterns.
